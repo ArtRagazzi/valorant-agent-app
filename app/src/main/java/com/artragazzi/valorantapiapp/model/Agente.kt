@@ -13,6 +13,4 @@ data class Agente (
     val imgAgente:String = "",
 
 
-
-
 )

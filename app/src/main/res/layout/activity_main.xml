@@ -31,7 +31,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/txtLabelBuscarAgente"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtLabelBuscarAgente"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/branco"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabBuscar"
@@ -57,12 +58,13 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fabBuscar"
+        android:visibility="visible"
         >
 
         <ImageView
             android:id="@+id/imgAgent"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -187,7 +189,7 @@
             android:src="@drawable/valorant_logo"/>
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnRecuar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

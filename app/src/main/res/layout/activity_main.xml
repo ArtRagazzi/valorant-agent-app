@@ -17,36 +17,36 @@
         android:fontFamily="@font/valorant_font"
         android:text="Buscar Agente"
         android:textColor="@color/vermelho"
-        android:textSize="16sp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/editBuscar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="15"
         android:inputType="text"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/txtLabelBuscarAgente"
+        android:textColor="@color/branco"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtLabelBuscarAgente"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/branco"/>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="3dp"
+        app:layout_constraintTop_toBottomOf="@id/txtLabelBuscarAgente"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabBuscar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/branco"
         android:src="@drawable/ic_lupa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLabelBuscarAgente"
-        android:backgroundTint="@color/branco"
-        app:tint="@color/vermelho"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/editBuscar"
+        app:tint="@color/vermelho" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutInfo"
@@ -63,12 +63,15 @@
 
         <ImageView
             android:id="@+id/imgAgent"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/vermelho"
+            android:scaleType="centerCrop"
+            android:src="@drawable/valorant_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/valorant_logo"
+            app:shapeAppearanceOverlay="@style/Circulo"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -102,7 +105,7 @@
             android:id="@+id/txtLabelDescricao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="34dp"
             android:fontFamily="@font/valorant_font"
             android:text="Descricao"
             android:textColor="@color/vermelho"
@@ -129,7 +132,7 @@
             android:id="@+id/txtLabelHabilidades"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="28dp"
             android:fontFamily="@font/valorant_font"
             android:text="Habilidades"
             android:textColor="@color/vermelho"
@@ -142,8 +145,8 @@
 
         <ImageView
             android:id="@+id/imgHabQ"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toStartOf="@+id/imgHabE"
             app:layout_constraintHorizontal_bias="0.5"
@@ -154,8 +157,8 @@
 
         <ImageView
             android:id="@+id/imgHabE"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgHabQ"
             app:layout_constraintEnd_toStartOf="@+id/imgHabC"
             app:layout_constraintHorizontal_bias="0.5"
@@ -166,8 +169,8 @@
 
         <ImageView
             android:id="@+id/imgHabC"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgHabE"
             app:layout_constraintEnd_toStartOf="@+id/imgHabX"
             app:layout_constraintHorizontal_bias="0.5"
@@ -178,8 +181,8 @@
 
         <ImageView
             android:id="@+id/imgHabX"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgHabC"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -199,6 +202,19 @@
             app:layout_constraintTop_toBottomOf="@+id/imgHabQ"
             app:srcCompat="@drawable/ic_recuar_24"
             app:tint="@color/branco" />
+
+        <ImageView
+            android:id="@+id/imgClasse"
+            android:layout_width="77dp"
+            android:layout_height="71dp"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgAgent"
+            app:layout_constraintEnd_toEndOf="@+id/imgAgent"
+            app:layout_constraintStart_toStartOf="@+id/imgAgent"
+            app:layout_constraintTop_toTopOf="@+id/imgAgent"
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            android:layout_marginTop="128dp"
+            android:layout_marginStart="128dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

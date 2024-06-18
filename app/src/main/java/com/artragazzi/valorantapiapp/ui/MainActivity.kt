@@ -14,6 +14,9 @@ import com.artragazzi.valorantapiapp.databinding.ActivityMainBinding
 import com.artragazzi.valorantapiapp.model.Agente
 import com.artragazzi.valorantapiapp.service.RetrofitHelper
 import com.artragazzi.valorantapiapp.service.ValorantAPI
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainCoroutineDispatcher
@@ -46,15 +49,35 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.fabBuscar.setOnClickListener {
-            val nomeAgente = binding.editBuscar.text.toString()
+            val nomeAgente = binding.editBuscar.text.toString().replaceFirstChar { char-> char.uppercase() }
 
             CoroutineScope(Dispatchers.IO).launch {
                 if(recuperarAgente(nomeAgente)){
-                    val slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in)
-                    binding.layoutInfo.startAnimation(slideIn)
-                    binding.layoutInfo.isVisible = true
+                    withContext(Dispatchers.Main) {
+                        val slideIn =
+                            AnimationUtils.loadAnimation(applicationContext, R.anim.slide_in)
+                        binding.layoutInfo.startAnimation(slideIn)
+                        binding.layoutInfo.isVisible = true
 
+                        Glide.with(applicationContext)
+                            .load(meuAgente.imgAgente)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(binding.imgAgent)
 
+                        binding.nomeAgent.setText(meuAgente.nome)
+                        binding.classeAgent.setText(meuAgente.classe)
+                        binding.txtDescricao.setText(meuAgente.descricao)
+
+                        Picasso.get().load(meuAgente.habilidades!!.get(0)).into(binding.imgHabQ)
+                        Picasso.get().load(meuAgente.habilidades!!.get(1)).into(binding.imgHabE)
+                        Picasso.get().load(meuAgente.habilidades!!.get(2)).into(binding.imgHabC)
+                        Picasso.get().load(meuAgente.habilidades!!.get(3)).into(binding.imgHabX)
+                        Picasso.get().load(meuAgente.imgClasse).into(binding.imgClasse)
+                    }
+                }else{
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(applicationContext, "Agente não Encontrado", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -84,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             val agentes = responseBody["data"] as List<Map<String, String>>
 
             for (agente in agentes) {
-                if(agente["displayName"] == nomeAgente.trim()){
+                if(agente["displayName"] == nomeAgente.trim() && agente["isPlayableCharacter"].toString() == "true"){
                     val classe = agente["role"] as Map<String, Any>
                     val classeNome = classe["displayName"]
                     val imgClasse = classe["displayIcon"]

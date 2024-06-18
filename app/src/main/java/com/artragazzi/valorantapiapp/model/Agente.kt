@@ -7,7 +7,7 @@ data class Agente (
     val nome:String?,
     val descricao:String?="",
     val classe: String? = "",
-    val habilidades:List<String>? = emptyList(),
+    val habilidades:List<String>? = mutableListOf<String>(),
     val imgClasse:String ?= "",
     val imgAgente:String? = "",
 
@@ -15,4 +15,4 @@ data class Agente (
 
 
 
-)
+    )

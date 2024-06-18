@@ -9,4 +9,7 @@
     </style>
 
     <style name="Theme.ValorantApiApp" parent="Base.Theme.ValorantApiApp" />
+    <style name="Circulo">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

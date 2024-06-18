@@ -3,6 +3,7 @@ package com.artragazzi.valorantapiapp.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,15 +13,24 @@ import com.artragazzi.valorantapiapp.R
 import com.artragazzi.valorantapiapp.databinding.ActivityMainBinding
 import com.artragazzi.valorantapiapp.model.Agente
 import com.artragazzi.valorantapiapp.service.RetrofitHelper
-import com.artragazzi.valorantapiapp.service.RetrofitService
+import com.artragazzi.valorantapiapp.service.ValorantAPI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainCoroutineDispatcher
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
+import retrofit2.create
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val retrofit by lazy{
+
+    private val retrofit by lazy {
         RetrofitHelper.retrofit
     }
+    private lateinit var meuAgente:Agente;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +43,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+
+
         binding.fabBuscar.setOnClickListener {
-            //Adicionando animação ao clicar em buscar (Aparecer apenas dps de carregado a chamada API)
-            val slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in)
-            binding.layoutInfo.startAnimation(slideIn)
-            binding.layoutInfo.isVisible = true
+            val nomeAgente = binding.editBuscar.text.toString()
+
+            CoroutineScope(Dispatchers.IO).launch {
+                if(recuperarAgente(nomeAgente)){
+                    val slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in)
+                    binding.layoutInfo.startAnimation(slideIn)
+                    binding.layoutInfo.isVisible = true
+
+
+                }
+            }
         }
 
 
@@ -48,24 +67,48 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
     }
-    private suspend fun recuperarAgente(nome:String){
 
-        var retorno: Response<Agente>? = null
-
+    private suspend fun recuperarAgente(nomeAgente:String):Boolean {
+        var response: Response<Any>? = null
         try {
-            val servico = retrofit.create(RetrofitService::class.java)
-            retorno = servico.getAgent(nome)
-        }catch (e: Exception){
-            Log.i("info_rest", "${e.printStackTrace()}")
+            val service = retrofit.create(ValorantAPI::class.java)
+            response = service.getAllAgents()
+        }catch (e:Exception){
+            Log.i("info-rest", "${e.printStackTrace()}")
         }
-        if(retorno!=null && retorno.isSuccessful){
-            val agente = retorno.body()
+        if(response != null && response.isSuccessful){
+            //Gera um map String E valor
+            val responseBody = response.body() as Map<String,Any>
+            // Pega a chave Data (Dentro de Data agora ta todos agentes Numa lista, e essa lista é um map dos atributos e seus valores)
+            val agentes = responseBody["data"] as List<Map<String, String>>
+
+            for (agente in agentes) {
+                if(agente["displayName"] == nomeAgente.trim()){
+                    val classe = agente["role"] as Map<String, Any>
+                    val classeNome = classe["displayName"]
+                    val imgClasse = classe["displayIcon"]
+
+                    var listHabilidades = mutableListOf<String>()
+                    val habilidades = agente["abilities"] as List<Map<String, String>>
+                    for(habilidade in habilidades){
+                        listHabilidades.add(habilidade["displayIcon"].toString())
+                    }
+                    meuAgente = Agente(
+                        nome = agente["displayName"],
+                        descricao = agente["description"],
+                        classe = classeNome.toString(),
+                        habilidades = listHabilidades,
+                        imgClasse = imgClasse.toString(),
+                        imgAgente = agente["displayIcon"].toString()
+                    )
+                    return true
+                }
+            }
         }
-
-
+        return false
     }
+
+
+
 }
